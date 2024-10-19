@@ -2,7 +2,7 @@ import { parseCSV } from './csvParser';
 
 // Mock PapaParse's parse function to simulate reading CSV files
 jest.mock('papaparse', () => ({
-    parse: (filePath: string, config: any) => {
+    parse: (_filePath: string, config: any) => {
         config.complete({
             data: [
                 { fgid: 'vf', foodgroup: 'Vegetables and Fruit', fgcat: 'Dark green vegetable' },
@@ -22,7 +22,7 @@ describe('parseCSV', () => {
 
     it('should throw an error if parsing fails', async () => {
         jest.mock('papaparse', () => ({
-            parse: (filePath: string, config: any) => {
+            parse: (_filePath: string, config: any) => {
                 config.error(new Error('Failed to parse'));
             },
         }));
