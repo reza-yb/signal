@@ -3,8 +3,8 @@ import { CardContent, Typography, Chip, Box } from '@mui/material';
 import { StyledCard } from './StyledComponents';
 
 interface CardLayoutProps {
-  title: string;
-  subtitle?: string | number;
+  title: React.ReactNode;
+  subtitle: string;
   children: React.ReactNode;
 }
 

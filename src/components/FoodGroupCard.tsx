@@ -21,8 +21,30 @@ const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
   const handleCloseDialog = () => setOpenDialog(false);
 
   return (
-    <CardLayout title={foodGroup.foodgroup} subtitle={`${servings} servings`}>
-      <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 200 }}>
+    <CardLayout 
+      title={
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span>{foodGroup.foodgroup}</span>
+          <Button 
+            onClick={() => setShowTips(!showTips)}
+            sx={{ 
+              minWidth: 0,
+              padding: 0,
+              color: 'secondary.main',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                color: 'secondary.light',  // Change icon color to white on hover
+              },
+            }}
+          >
+            {showTips ? <RestaurantIcon /> : <TipsAndUpdatesIcon />}
+          </Button>
+        </Box>
+      }
+      subtitle={`${servings} servings`}
+    >
+      <Box sx={{ position: 'relative', flexGrow: 1, overflow: 'auto', minHeight: 300, maxHeight: 300 }}>
         {!showTips ? (
           <>
             <FoodList items={foods.slice(0, 3)} />
@@ -43,20 +65,6 @@ const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
           <TipsList tips={directionalStatements} />
         )}
       </Box>
-      <Button 
-        startIcon={showTips ? <RestaurantIcon /> : <TipsAndUpdatesIcon />}
-        onClick={() => setShowTips(!showTips)}
-        sx={{ 
-          mt: 'auto', 
-          color: 'secondary.main',
-          '&:hover': {
-            backgroundColor: 'secondary.light',
-            color: 'secondary.contrastText',
-          },
-        }}
-      >
-        {showTips ? 'Show Foods' : 'Show Tips'}
-      </Button>
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle>{foodGroup.foodgroup} - All Foods</DialogTitle>
         <DialogContent>
