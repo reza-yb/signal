@@ -16,11 +16,12 @@ import {
   IconButton,
   Paper,
   Avatar,
+  Tooltip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import { HomeProps, FamilyMember } from '../types/shared';
+import { FamilyMember } from '../types/foodGuide';
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
@@ -51,6 +52,10 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   marginRight: theme.spacing(2),
   backgroundColor: theme.palette.primary.main,
 }));
+
+interface HomeProps {
+  onGeneratePlan: (members: FamilyMember[]) => void;
+}
 
 const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
   const [name, setName] = useState<string>('');
@@ -156,38 +161,48 @@ const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
           </Button>
         </StyledForm>
 
-        <Box sx={{ mt: 6 }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Family Members:
-          </Typography>
-          {familyMembers.map((member, index) => (
-            <MemberCard key={index}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <StyledAvatar>{member.name[0].toUpperCase()}</StyledAvatar>
-                <CardContent>
-                  <Typography variant="h6">{member.name}</Typography>
-                  <Typography variant="body2" color="textSecondary">{`${member.age} years old, ${member.gender}`}</Typography>
-                </CardContent>
-              </Box>
-              <IconButton onClick={() => handleRemoveMember(index)} color="error">
-                <DeleteIcon />
-              </IconButton>
-            </MemberCard>
-          ))}
-        </Box>
+        {familyMembers.length > 0 && (
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+              Family Members:
+            </Typography>
+            {familyMembers.map((member, index) => (
+              <MemberCard key={index}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <StyledAvatar>{member.name[0].toUpperCase()}</StyledAvatar>
+                  <CardContent>
+                    <Typography variant="h6">{member.name}</Typography>
+                    <Typography variant="body2" color="textSecondary">{`${member.age} years old, ${member.gender}`}</Typography>
+                  </CardContent>
+                </Box>
+                <IconButton onClick={() => handleRemoveMember(index)} color="error">
+                  <DeleteIcon />
+                </IconButton>
+              </MemberCard>
+            ))}
+          </Box>
+        )}
 
         <Box sx={{ mt: 6 }}>
-          <Button
-            onClick={handleGeneratePlan}
-            variant="contained"
-            color="secondary"
-            fullWidth
-            size="large"
-            disabled={familyMembers.length === 0}
-            sx={{ py: 2 }}
-          >
-            Generate Personalized Plan
-          </Button>
+          <Tooltip title={familyMembers.length === 0 ? "Add at least one family member to generate a plan" : ""}>
+            <span>
+              <Button
+                onClick={handleGeneratePlan}
+                variant="contained"
+                color="secondary"
+                fullWidth
+                size="large"
+                disabled={familyMembers.length === 0}
+                sx={{ 
+                  py: 2,
+                  opacity: familyMembers.length === 0 ? 0.5 : 1,
+                  cursor: familyMembers.length === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                Generate Personalized Plan
+              </Button>
+            </span>
+          </Tooltip>
         </Box>
       </Paper>
     </Container>

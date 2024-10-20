@@ -70,12 +70,21 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: '8px',
+          transition: 'background-color 0.3s, transform 0.2s',
           '&:focus': {
             outline: 'none',
-            backgroundColor: 'transparent',
           },
+        },
+        contained: {
           '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.04)', // Light gray hover effect
+            backgroundColor: '#1976d2', // Darker shade of primary color
+          },
+          '&.MuiButton-colorSecondary': {
+            backgroundColor: '#ff4081', // Secondary main color
+            color: '#ffffff', // Ensure text color is white or appropriate contrast
+            '&:hover': {
+              backgroundColor: '#c60055', // Darker shade of secondary color
+            },
           },
         },
       },
