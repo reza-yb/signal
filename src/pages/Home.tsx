@@ -39,7 +39,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
   const [name, setName] = useState<string>('');
-  const [age, setAge] = useState<number | ''>('');
+  const [age, setAge] = useState<string>('');
   const [gender, setGender] = useState<'male' | 'female' | ''>('');
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   const navigate = useNavigate();
@@ -47,7 +47,13 @@ const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
   const handleAddMember = (event: React.FormEvent) => {
     event.preventDefault();
     if (name && age !== '' && gender) {
-      const newMember: FamilyMember = { name, age: Number(age), gender };
+      const ageNumber = parseInt(age, 10);
+      if (familyMembers.some(member => member.name.toLowerCase() === name.toLowerCase())) {
+        alert('Name must be unique');
+        return;
+      }
+
+      const newMember: FamilyMember = { name, age: ageNumber, gender };
       setFamilyMembers([...familyMembers, newMember]);
       setName('');
       setAge('');
@@ -69,7 +75,7 @@ const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" component="h1" gutterBottom align="center">
-        Create Your Personalized Menu Plan
+        Create Your Optimal Meal Plan
       </Typography>
       <StyledForm onSubmit={handleAddMember}>
         <TextField
@@ -78,20 +84,39 @@ const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
           onChange={(e) => setName(e.target.value)}
           required
           fullWidth
+          slotProps={{
+            input: {
+              inputProps: {
+                maxLength: 10,
+              },
+            },
+          }}
+          helperText="Max 10 characters"
         />
         <TextField
           label="Age"
           type="number"
           value={age}
-          onChange={(e) => setAge(Number(e.target.value))}
+          onChange={(e) => setAge(e.target.value)}
           required
           fullWidth
+          slotProps={{
+            input: {
+              inputProps: {
+                min: 2,
+                max: 100,
+              },
+            },
+          }}
+          helperText="Must be 2 or older"
         />
         <FormControl fullWidth required>
-          <InputLabel>Gender</InputLabel>
+          <InputLabel id="gender-label">Gender</InputLabel>
           <Select
+            labelId="gender-label"
             value={gender}
             onChange={(e) => setGender(e.target.value as 'male' | 'female' | '')}
+            label="Gender"
           >
             <MenuItem value="male">Male</MenuItem>
             <MenuItem value="female">Female</MenuItem>
