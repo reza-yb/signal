@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Container, Typography, Box, Card, CardContent, Button, Stack } from '@mui/material';
+import { Container, Typography, Box, Card, CardContent, Tabs, Tab } from '@mui/material';
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement, FamilyMember } from '../types/foodGuide';
 import FoodGroupCard from '../components/FoodGroupCard';
 import ShoppingList from '../components/ShoppingList';
@@ -29,7 +29,7 @@ const MyPlan: React.FC<MyPlanProps> = ({
   directionalStatements,
 }) => {
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(familyMembers[0] || null);
-  const [showShoppingList, setShowShoppingList] = useState(false);
+  const [activeTab, setActiveTab] = useState<'menu' | 'shopping'>('menu');
 
   // Calculate plans for all family members once
   const familyPlans = useMemo(() => {
@@ -41,12 +41,14 @@ const MyPlan: React.FC<MyPlanProps> = ({
 
   const handleSelectMember = (member: FamilyMember) => {
     setSelectedMember(member);
-    setShowShoppingList(false);
+    setActiveTab('menu');
   };
 
-  const toggleShoppingList = () => {
-    setShowShoppingList(!showShoppingList);
-    setSelectedMember(null);
+  const handleTabChange = (event: React.SyntheticEvent, newValue: 'menu' | 'shopping') => {
+    setActiveTab(newValue);
+    if (newValue === 'shopping') {
+      setSelectedMember(null);
+    }
   };
 
   const allFoods = useMemo(() => {
@@ -65,16 +67,27 @@ const MyPlan: React.FC<MyPlanProps> = ({
         </Typography>
         
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            Family Members:
-          </Typography>
-          <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap">
-            {familyMembers.map((member, index) => (
-              <Stack key={index} flex="1 1 auto" minWidth="200px">
+          <Tabs value={activeTab} onChange={handleTabChange} centered>
+            <Tab label="Menu" value="menu" />
+            <Tab label="Shopping List" value="shopping" />
+          </Tabs>
+        </Box>
+
+        {activeTab === 'menu' && (
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Family Members:
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              {familyMembers.map((member, index) => (
                 <Card 
+                  key={index}
                   sx={{ 
                     cursor: 'pointer', 
-                    bgcolor: selectedMember === member ? 'primary.light' : 'background.paper'
+                    bgcolor: selectedMember === member ? 'primary.light' : 'background.paper',
+                    flex: '1 1 calc(33.333% - 16px)',
+                    minWidth: '200px',
+                    maxWidth: 'calc(33.333% - 16px)',
                   }}
                   onClick={() => handleSelectMember(member)}
                 >
@@ -83,40 +96,30 @@ const MyPlan: React.FC<MyPlanProps> = ({
                     <Typography>{`Age: ${member.age}, Gender: ${member.gender}`}</Typography>
                   </CardContent>
                 </Card>
-              </Stack>
-            ))}
-          </Stack>
-        </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
 
-        <Box sx={{ mb: 4 }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={toggleShoppingList}
-            fullWidth
-          >
-            {showShoppingList ? "Hide Shopping List" : "Show Shopping List"}
-          </Button>
-        </Box>
-
-        {showShoppingList ? (
+        {activeTab === 'shopping' ? (
           <ShoppingList foods={allFoods} />
         ) : selectedMember && (
           <Box>
             <Typography variant="h4" gutterBottom>
               {selectedMember.name}'s Plan
             </Typography>
-            <Stack spacing={3}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
               {Object.entries(familyPlans[selectedMember.name]).map(([groupName, groupData]) => (
-                <FoodGroupCard
-                  key={groupName}
-                  foodGroup={{ foodgroup: groupName } as FoodGroup}
-                  servings={groupData.servings}
-                  foods={groupData.foods}
-                  directionalStatements={groupData.directionalStatements}
-                />
+                <Box key={groupName} sx={{ flexBasis: { xs: '100%', sm: 'calc(50% - 12px)', md: 'calc(33.333% - 16px)' } }}>
+                  <FoodGroupCard
+                    foodGroup={{ foodgroup: groupName } as FoodGroup}
+                    servings={groupData.servings}
+                    foods={groupData.foods}
+                    directionalStatements={groupData.directionalStatements}
+                  />
+                </Box>
               ))}
-            </Stack>
+            </Box>
           </Box>
         )}
       </Container>
