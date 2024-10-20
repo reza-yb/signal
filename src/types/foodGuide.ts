@@ -26,3 +26,10 @@ export interface DirectionalStatement {
     fgid: string;
     "directional-statement": string;
 }
+
+// Interface for family members
+export interface FamilyMember {
+    name: string;
+    age: number;
+    gender: 'male' | 'female';
+}
