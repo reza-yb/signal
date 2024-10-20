@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, styled } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -26,10 +26,25 @@ const FlashyButton = styled(Button)<{ component?: React.ElementType; to?: string
   fontWeight: 'bold',
   '&:hover': {
     backgroundColor: theme.palette.secondary.dark,
+    color: theme.palette.secondary.contrastText,
+  },
+  '&:focus': {
+    backgroundColor: theme.palette.secondary.main,
+    outline: 'none',
+  },
+  '&:active': {
+    backgroundColor: theme.palette.secondary.dark,
+  },
+  '&.Mui-focusVisible': {
+    backgroundColor: theme.palette.secondary.main,
+    outline: `3px solid ${theme.palette.secondary.light}`,
   },
 }));
 
 const Header: React.FC = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
     <StyledAppBar position="static">
       <StyledToolbar>
@@ -39,14 +54,16 @@ const Header: React.FC = () => {
             Canada's Optimal Food Planner
           </Typography>
         </LogoBox>
-        <FlashyButton
-          component={RouterLink}
-          to="/"
-          startIcon={<AddIcon />}
-          variant="contained"
-        >
-          New Meal Plan
-        </FlashyButton>
+        {!isHomePage && (
+          <FlashyButton
+            component={RouterLink}
+            to="/"
+            startIcon={<AddIcon />}
+            variant="contained"
+          >
+            New Meal Plan
+          </FlashyButton>
+        )}
       </StyledToolbar>
     </StyledAppBar>
   );
