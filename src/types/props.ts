@@ -1,4 +1,4 @@
-import { FoodItem, FoodGroup } from './foodGuide';
+import { FoodItem, FoodGroup, ServingRecommendation, DirectionalStatement } from './foodGuide';
 
 export interface FamilyMember {
     name: string;
@@ -34,3 +34,20 @@ export interface FoodListProps {
 export interface TipsListProps {
   tips: string[];
 }
+
+export interface MyPlanProps {
+  familyMembers: FamilyMember[];
+  foodGroups: FoodGroup[];
+  foods: FoodItem[];
+  servings: ServingRecommendation[];
+  directionalStatements: DirectionalStatement[];
+}
+
+export interface FamilyMemberPlan {
+  [groupName: string]: {
+    servings: number;
+    foods: { food: FoodItem; servings: number; }[];
+    directionalStatements: string[];
+  };
+}
+
