@@ -27,7 +27,7 @@ export class NodeFileReader implements FileReader {
 }
 
 export const getFileReader = (): FileReader => {
-  if (typeof window === 'undefined') {
+  if (process.env.NODE_ENV === 'test') {
     return new NodeFileReader();
   } else {
     return new BrowserFileReader();
