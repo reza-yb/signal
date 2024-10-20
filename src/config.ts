@@ -1,11 +1,5 @@
-import path from 'path';
-
-const isTest = process.env.NODE_ENV === 'test';
-
-const baseDir = isTest ? path.join(__dirname, '..', 'public') : './public';
-
 export const config = {
-  dataDir: path.join(baseDir, 'data'),
+  dataDir: `./public/data`,
   files: {
     foodGroups: 'foodgroups-en_ONPP.csv',
     foods: 'foods-en_ONPP_rev.csv',
@@ -15,4 +9,4 @@ export const config = {
 };
 
 export const getFilePath = (fileName: keyof typeof config.files) => 
-  path.join(config.dataDir, config.files[fileName]);
+  `${config.dataDir}/${config.files[fileName]}`;
