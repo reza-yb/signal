@@ -1,5 +1,9 @@
+const isTest = process.env.NODE_ENV === 'test';
+
+const baseDir = isTest ? './public' : '';
+
 export const config = {
-  dataDir: `./public/data`,
+  dataDir: `${baseDir}/data`,
   files: {
     foodGroups: 'foodgroups-en_ONPP.csv',
     foods: 'foods-en_ONPP_rev.csv',

@@ -8,6 +8,7 @@ export interface FoodGroup {
 // Interface for each row of foods CSV
 export interface FoodItem {
     fgid: string;
+    fgcat_id: string;
     food: string;
     srvg_sz: string;
 }

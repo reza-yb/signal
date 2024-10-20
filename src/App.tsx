@@ -10,8 +10,7 @@ const App: React.FC = () => {
     const [foodGroups, setFoodGroups] = useState<FoodGroup[]>([]);
     const [foods, setFoods] = useState<FoodItem[]>([]);
     const [servings, setServings] = useState<ServingRecommendation[]>([]);
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const [_directionalStatements, setDirectionalStatements] = useState<DirectionalStatement[]>([]);
+    const [directionalStatements, setDirectionalStatements] = useState<DirectionalStatement[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const [userAge, setUserAge] = useState<number | null>(null);
@@ -50,11 +49,11 @@ const App: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (userAge && userGender && foodGroups.length && foods.length && servings.length) {
-            const menu = calculateDailyMenu(userAge, userGender, foodGroups, foods, servings);
+        if (userAge && userGender && foodGroups.length && foods.length && servings.length && directionalStatements.length) {
+            const menu = calculateDailyMenu(userAge, userGender, foodGroups, foods, servings, directionalStatements);
             setDailyMenu(menu);
         }
-    }, [userAge, userGender, foodGroups, foods, servings]);
+    }, [userAge, userGender, foodGroups, foods, servings, directionalStatements]);
 
     const handleFormSubmit = (age: number, gender: string) => {
         setUserAge(age);
@@ -69,12 +68,18 @@ const App: React.FC = () => {
             {userAge && userGender && (
                 <div>
                     <h2>Daily Menu for age: {userAge}, gender: {userGender}</h2>
-                    {dailyMenu && Object.entries(dailyMenu).map(([group, { servings, foods }]) => (
+                    {dailyMenu && Object.entries(dailyMenu).map(([group, { servings, foods, directionalStatements }]) => (
                         <div key={group}>
                             <h3>{group}: {servings} servings</h3>
                             <ul>
-                                {foods.map((food, index) => (
-                                    <li key={index}>{food.food} - {food.srvg_sz}</li>
+                                {foods.map(({ food, servings }, index) => (
+                                    <li key={index}>{food.food} - {food.srvg_sz} ({servings} serving{servings > 1 ? 's' : ''})</li>
+                                ))}
+                            </ul>
+                            <h4>Directional Statements:</h4>
+                            <ul>
+                                {directionalStatements.map((statement, index) => (
+                                    <li key={index}>{statement}</li>
                                 ))}
                             </ul>
                         </div>
