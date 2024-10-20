@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardLayout from './shared/CardLayout';
 import FoodList from './FoodList';
 import TipsList from './TipsList';
-import { FoodGroupCardProps } from '../types/shared';
+import {FoodGroupCardProps} from "../types/props";
 
 const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
   foodGroup,

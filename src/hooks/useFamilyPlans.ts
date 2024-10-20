@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { FamilyMember, FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from '../types/foodGuide';
 import { calculateDailyMenu } from '../utils/menuCalculator';
+import {FamilyMemberPlan} from "../types/props";
 
 export const useFamilyPlans = (
   familyMembers: FamilyMember[],

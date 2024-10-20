@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 import FoodGroupCard from '../components/FoodGroupCard';
 import { FamilyMember } from '../types/foodGuide';
-import { FamilyMemberPlan } from './types';
+import {FamilyMemberPlan} from "../types/props";
 
 interface PlanDisplayProps {
   selectedMember: FamilyMember;

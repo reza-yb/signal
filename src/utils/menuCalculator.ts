@@ -1,5 +1,5 @@
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from '../types/foodGuide';
-import {logger} from "./logger.ts";
+import {logger} from "./logger";
 
 interface DailyMenu {
     [key: string]: {

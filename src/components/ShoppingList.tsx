@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Paper, Divider, Chip, Button } from '@mui/material';
 import { aggregateDuplicateItems } from '../utils/menuCalculator';
 import { ShoppingCart, ExpandMore } from '@mui/icons-material';
-import { ShoppingListProps } from '../types/shared';
+import {ShoppingListProps} from "../types/props";
 
 const ShoppingList: React.FC<ShoppingListProps> = ({ foods }) => {
   const [expanded, setExpanded] = useState(false);
