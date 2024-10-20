@@ -4,12 +4,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  background: theme.palette.mode === 'light' 
-    ? theme.palette.primary.main
-    : theme.palette.background.paper,
-  color: theme.palette.mode === 'light'
-    ? theme.palette.primary.contrastText
-    : theme.palette.text.primary,
+  background: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
 }));
 
 export const StyledToolbar = styled(Toolbar)({

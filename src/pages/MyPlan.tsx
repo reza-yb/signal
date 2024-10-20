@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Box, Tabs, Tab } from '@mui/material';
-import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement, FamilyMember } from '../types/foodGuide';
+import { FamilyMember } from '../types/foodGuide';
 import ShoppingList from '../components/ShoppingList';
-import { calculateDailyMenu } from '../utils/menuCalculator';
-import { MyPlanProps, FamilyMemberPlan } from './types';
 import FamilyMemberSelector from './FamilyMemberSelector';
 import PlanDisplay from './PlanDisplay';
+import { useFamilyPlans } from '../hooks/useFamilyPlans';
+import {MyPlanProps} from "../types/props.ts";
 
 const MyPlan: React.FC<MyPlanProps> = ({
   familyMembers,
@@ -19,12 +19,7 @@ const MyPlan: React.FC<MyPlanProps> = ({
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(familyMembers[0] || null);
   const [activeTab, setActiveTab] = useState<'menu' | 'shopping'>('menu');
 
-  const familyPlans = useMemo(() => {
-    return familyMembers.reduce((plans, member) => {
-      plans[member.name] = calculateDailyMenu(member.age, member.gender, foodGroups, foods, servings, directionalStatements);
-      return plans;
-    }, {} as Record<string, FamilyMemberPlan>);
-  }, [familyMembers, foodGroups, foods, servings, directionalStatements]);
+  const familyPlans = useFamilyPlans(familyMembers, foodGroups, foods, servings, directionalStatements);
 
   useEffect(() => {
     if (Object.keys(familyPlans).length === 0) {
@@ -52,7 +47,7 @@ const MyPlan: React.FC<MyPlanProps> = ({
 
   const allFoods = useMemo(() => {
     const foods = Object.values(familyPlans).flatMap(plan => 
-      Object.values(plan).flatMap(group => group.foods)
+      Object.values(plan as Record<string, { foods: any[] }>).flatMap(group => group.foods)
     );
     console.log('All foods before passing to ShoppingList:', foods);
     return foods;
