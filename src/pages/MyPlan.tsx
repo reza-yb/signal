@@ -111,9 +111,9 @@ const MyPlan: React.FC<MyPlanProps> = ({
                     key={index}
                     sx={{ 
                       bgcolor: selectedMember === member ? 'primary.light' : 'background.paper',
-                      flex: '1 1 calc(33.333% - 16px)',
+                      flex: '1 1 calc(50% - 16px)',
                       minWidth: '200px',
-                      maxWidth: 'calc(33.333% - 16px)',
+                      maxWidth: 'calc(50% - 16px)',
                     }}
                     onClick={() => handleSelectMember(member)}
                   >
@@ -137,7 +137,7 @@ const MyPlan: React.FC<MyPlanProps> = ({
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                 {Object.entries(familyPlans[selectedMember.name]).map(([groupName, groupData]) => (
-                  <Box key={groupName} sx={{ flexBasis: { xs: '100%', sm: 'calc(50% - 12px)', md: 'calc(33.333% - 16px)' } }}>
+                  <Box key={groupName} sx={{ flexBasis: { xs: '100%', sm: 'calc(50% - 12px)' } }}>
                     <FoodGroupCard
                       foodGroup={{ foodgroup: groupName } as FoodGroup}
                       servings={groupData.servings}

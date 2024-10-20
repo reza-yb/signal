@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Paper, Divider, Chip, Button } from '@mui/material';
-import { FoodItem } from '../types/foodGuide';
 import { aggregateDuplicateItems } from '../utils/menuCalculator';
 import { ShoppingCart, ExpandMore } from '@mui/icons-material';
 import { ShoppingListProps } from '../types/shared';
