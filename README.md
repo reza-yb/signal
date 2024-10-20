@@ -10,6 +10,12 @@ Canada's Optimal Food Planner is a web application designed to help Canadians cr
 - Responsive design for desktop and mobile devices
 - Light and dark mode support
 
+## Continuous Integration and Continuous Deployment
+
+We are using **GitHub Workflows** for Continuous Integration (CI) to automate testing, linting, and building the project with every pull request or code push. This ensures the code quality is maintained throughout the development lifecycle.
+
+For Continuous Deployment (CD), we use **Vercel** to automatically deploy the latest version of the app to production. Every successful build on the `main` branch is deployed seamlessly to Vercel, ensuring that users always have access to the latest features and bug fixes.
+
 ## Getting Started
 
 ### Prerequisites
@@ -36,6 +42,7 @@ Canada's Optimal Food Planner is a web application designed to help Canadians cr
    ```
 
 4. Open your browser and navigate to `http://localhost:5173`
+
 ## Alternative: Running with Docker
 
 If you prefer to use Docker, follow these steps:
@@ -69,12 +76,12 @@ This method will build and run the application in a Docker container, making it 
 ## Project Structure
 
 - `src/`: Source code
-  - `components/`: Reusable React components
-  - `pages/`: Main page components
-  - `hooks/`: Custom React hooks
-  - `utils/`: Utility functions
-  - `types/`: TypeScript type definitions
-  - `config.ts`: Configuration file
+    - `components/`: Reusable React components
+    - `pages/`: Main page components
+    - `hooks/`: Custom React hooks
+    - `utils/`: Utility functions
+    - `types/`: TypeScript type definitions
+    - `config.ts`: Configuration file
 - `public/`: Static assets and data files
 - `tests/`: Test files
 
