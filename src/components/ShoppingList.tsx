@@ -3,10 +3,7 @@ import { Box, Typography, List, ListItem, ListItemText, Paper, Divider, Chip, Bu
 import { FoodItem } from '../types/foodGuide';
 import { aggregateDuplicateItems } from '../utils/menuCalculator';
 import { ShoppingCart, ExpandMore } from '@mui/icons-material';
-
-interface ShoppingListProps {
-  foods: { food: FoodItem; servings: number }[];
-}
+import { ShoppingListProps } from '../types/shared';
 
 const ShoppingList: React.FC<ShoppingListProps> = ({ foods }) => {
   const [expanded, setExpanded] = useState(false);

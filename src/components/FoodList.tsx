@@ -2,12 +2,8 @@ import React from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
-import { FoodItem } from '../types/foodGuide';
 import { FoodItemChip } from './FoodGroupCard/styles';
-
-interface FoodListProps {
-  items: { food: FoodItem; servings: number }[];
-}
+import { FoodListProps } from '../types/shared';
 
 const FoodList: React.FC<FoodListProps> = ({ items }) => (
   <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>

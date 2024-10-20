@@ -20,7 +20,7 @@ const LogoBox = styled(Box)({
   alignItems: 'center',
 });
 
-const FlashyButton = styled(Button)(({ theme }) => ({
+const FlashyButton = styled(Button)<{ component?: React.ElementType; to?: string }>(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.secondary.contrastText,
   fontWeight: 'bold',

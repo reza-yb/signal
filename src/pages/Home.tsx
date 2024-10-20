@@ -20,7 +20,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import { FamilyMember } from '../types/foodGuide';
+import { HomeProps, FamilyMember } from '../types/shared';
 
 const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
@@ -51,10 +51,6 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   marginRight: theme.spacing(2),
   backgroundColor: theme.palette.primary.main,
 }));
-
-interface HomeProps {
-  onGeneratePlan: (members: FamilyMember[]) => void;
-}
 
 const Home: React.FC<HomeProps> = ({ onGeneratePlan }) => {
   const [name, setName] = useState<string>('');

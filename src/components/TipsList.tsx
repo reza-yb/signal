@@ -1,10 +1,7 @@
 import React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-
-interface TipsListProps {
-  tips: string[];
-}
+import { TipsListProps } from '../types/shared';
 
 const TipsList: React.FC<TipsListProps> = ({ tips }) => (
   <List dense disablePadding>
