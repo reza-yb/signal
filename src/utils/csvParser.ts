@@ -11,7 +11,8 @@ export const parseCSV = async <T>(filePath: string): Promise<T[]> => {
                 transformHeader: (header: string) => header.trim(),
                 transform: (value: string) => value.trim(),
                 complete: (results) => {
-                    resolve(results.data);
+                    const filteredData = results.data.filter(row => Object.values(row as Record<string, unknown>).some(value => value !== ""));
+                    resolve(filteredData);
                 },
                 error: (error: Error) => {
                     reject(error);
