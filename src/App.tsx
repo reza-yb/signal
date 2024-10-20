@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
 
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
   const colorMode = useMemo(
     () => ({
