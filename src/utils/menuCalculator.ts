@@ -1,4 +1,5 @@
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from '../types/foodGuide';
+import {logger} from "./logger";
 
 interface DailyMenu {
     [key: string]: {
@@ -16,6 +17,7 @@ export function calculateDailyMenu(
     servings: ServingRecommendation[],
     directionalStatements: DirectionalStatement[]
 ): DailyMenu {
+    logger.debug('Calculating daily menu for:', { age, gender });
     const dailyMenu: DailyMenu = {};
 
     // Find the appropriate serving recommendations for the user's age and gender
@@ -23,6 +25,7 @@ export function calculateDailyMenu(
         s.gender.toLowerCase() === gender.toLowerCase() &&
         isAgeInRange(age, s.ages)
     );
+    logger.debug('User servings:', userServings);
 
     // Calculate servings for each food group
     for (const serving of userServings) {
@@ -37,6 +40,7 @@ export function calculateDailyMenu(
                 foods: getOptimalFoods(groupFoods, servingCount, foodGroup),
                 directionalStatements: statements
             };
+            logger.debug(`Added ${foodGroup.foodgroup} to daily menu:`, dailyMenu[foodGroup.foodgroup]);
         }
     }
 
@@ -135,5 +139,20 @@ function getOptimalFoods(foods: FoodItem[], count: number, foodGroup: FoodGroup)
         ...getRandomFoods(foods, count - optimalFoods.length),
     ]
 
-    return optimalFoods;
+    return aggregateDuplicateItems(optimalFoods);
+}
+
+export function aggregateDuplicateItems(foods: { food: FoodItem; servings: number }[]): { food: FoodItem; servings: number }[] {
+    const aggregatedFoods: { [key: string]: { food: FoodItem; servings: number } } = {};
+
+    for (const item of foods) {
+        const key = item.food.food;
+        if (aggregatedFoods[key]) {
+            aggregatedFoods[key].servings += item.servings;
+        } else {
+            aggregatedFoods[key] = { ...item };
+        }
+    }
+
+    return Object.values(aggregatedFoods);
 }

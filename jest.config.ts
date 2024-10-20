@@ -1,4 +1,5 @@
 import { Config } from '@jest/types';
+import { defaults } from 'jest-config';
 
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
@@ -6,7 +7,8 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
 };
 
 export default config;
