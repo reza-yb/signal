@@ -30,7 +30,7 @@ const StyledToolbar = styled(Toolbar)({
 const LogoBox = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-});
+}) as typeof Box; // Add this type assertion
 
 const FlashyButton = styled(Button)<{ component?: React.ElementType; to?: string }>(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
@@ -61,9 +61,9 @@ const Header: React.FC<{ toggleColorMode: () => void }> = ({ toggleColorMode }) 
   return (
     <StyledAppBar position="static">
       <StyledToolbar>
-        <LogoBox>
-          <RestaurantMenuIcon sx={{ mr: 2, fontSize: 32 }} />
-          <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+        <LogoBox component={RouterLink} to="/">
+          <RestaurantMenuIcon sx={{ mr: 2, fontSize: 32, color: '#ffffff' }} />
+          <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
             Canada's Optimal Food Planner
           </Typography>
         </LogoBox>
