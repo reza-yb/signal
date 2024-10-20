@@ -1,50 +1,109 @@
-# React + TypeScript + Vite
+# Canada's Optimal Food Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Canada's Optimal Food Planner is a web application designed to help Canadians create personalized meal plans based on Canada's Food Guide recommendations. This project is built using React, TypeScript, and Vite, with Material-UI for styling.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create personalized meal plans for individuals and families
+- Generate shopping lists based on meal plans
+- View nutritional recommendations and tips
+- Responsive design for desktop and mobile devices
+- Light and dark mode support
 
-## Expanding the ESLint configuration
+## Continuous Integration and Continuous Deployment
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+We are using **GitHub Workflows** for Continuous Integration (CI) to automate testing, linting, and building the project with every pull request or code push. This ensures the code quality is maintained throughout the development lifecycle.
 
-- Configure the top-level `parserOptions` property like this:
+For Continuous Deployment (CD), we use **Vercel** to automatically deploy the latest version of the app to production. Every successful build on the `main` branch is deployed seamlessly to Vercel, ensuring that users always have access to the latest features and bug fixes.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Getting Started
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Prerequisites
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Node.js (version 14 or higher)
+- npm (version 6 or higher)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/reza-yb/signal
+   cd signal
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## Alternative: Running with Docker
+
+If you prefer to use Docker, follow these steps:
+
+1. Make sure you have Docker installed on your machine.
+
+2. Build the Docker image:
+   ```
+   docker build -t canadas-optimal-food-planner .
+   ```
+
+3. Run the Docker container:
+   ```
+   docker run -p 5000:5000 canadas-optimal-food-planner
+   ```
+
+4. Open your browser and navigate to `http://localhost:5000`
+
+This method will build and run the application in a Docker container, making it easy to deploy and run in different environments.
+
+## Scripts
+
+- `npm run dev`: Start the development server
+- `npm run build`: Build the project for production
+- `npm run lint`: Run ESLint to check for code quality issues
+- `npm run preview`: Preview the production build locally
+- `npm test`: Run Jest tests
+- `docker build -t canadas-optimal-food-planner .`: Build the Docker image
+- `docker run -p 5000:5000 canadas-optimal-food-planner`: Run the Docker container
+
+## Project Structure
+
+- `src/`: Source code
+    - `components/`: Reusable React components
+    - `pages/`: Main page components
+    - `hooks/`: Custom React hooks
+    - `utils/`: Utility functions
+    - `types/`: TypeScript type definitions
+    - `config.ts`: Configuration file
+- `public/`: Static assets and data files
+- `tests/`: Test files
+
+## Technologies Used
+
+- React
+- TypeScript
+- Vite
+- Material-UI
+- React Router
+- Papa Parse (for CSV parsing)
+- Jest (for testing)
+
+## Security Best Practices
+
+We have implemented several security best practices to ensure the safety and integrity of our application:
+
+- **Input Validation**: We validate user inputs to prevent injection attacks and ensure data integrity.
+- **Content Security Policy (CSP)**: We recommend setting up a CSP to mitigate XSS attacks.
+- **HTTPS**: We recommend that the application is served over HTTPS in production to protect data in transit.
+- **Dependency Management**: We regularly update dependencies and use `npm audit` to check for vulnerabilities.
+- **Error Handling**: We handle errors gracefully to avoid exposing sensitive information.
+- **Rate Limiting**: We recommend implementing rate limiting on API endpoints to prevent abuse.
+
+These practices help us maintain a secure and robust application environment.
