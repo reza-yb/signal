@@ -8,6 +8,7 @@ import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement, Famil
 import { logger } from './utils/logger';
 import { getFilePath } from './config';
 import theme from './theme';
+import Alert from '@mui/material/Alert';
 
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -65,6 +66,7 @@ const App: React.FC = () => {
           bgcolor: 'background.default',
         }}>
           <Header />
+          {error && <Alert severity="error">{error}</Alert>}
           <Box component="main" sx={{ 
             flexGrow: 1, 
             display: 'flex', 
