@@ -61,7 +61,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ onAddMember }) => {
         <Select
           labelId="gender-label"
           value={gender}
-          onChange={(e) => setGender(e.target.value as 'male' | 'female' | '')}
+          onChange={(e) => setGender(e.target.value as 'male' | 'female')}
           label="Gender"
         >
           <MenuItem value="male">Male</MenuItem>

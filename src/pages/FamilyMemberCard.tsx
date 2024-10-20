@@ -32,7 +32,7 @@ const FamilyMemberCard: React.FC<FamilyMemberCardProps> = ({ member, onRemove })
         <Typography variant="body2" color="textSecondary">{`${member.age} years old, ${member.gender}`}</Typography>
       </CardContent>
     </Box>
-    <IconButton onClick={onRemove} color="error">
+    <IconButton onClick={onRemove} color="error" aria-label={`Delete ${member.name}`}>
       <DeleteIcon />
     </IconButton>
   </MemberCard>
