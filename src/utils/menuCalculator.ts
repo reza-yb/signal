@@ -139,5 +139,20 @@ function getOptimalFoods(foods: FoodItem[], count: number, foodGroup: FoodGroup)
         ...getRandomFoods(foods, count - optimalFoods.length),
     ]
 
-    return optimalFoods;
+    return aggregateDuplicateItems(optimalFoods);
+}
+
+export function aggregateDuplicateItems(foods: { food: FoodItem; servings: number }[]): { food: FoodItem; servings: number }[] {
+    const aggregatedFoods: { [key: string]: { food: FoodItem; servings: number } } = {};
+
+    for (const item of foods) {
+        const key = item.food.food;
+        if (aggregatedFoods[key]) {
+            aggregatedFoods[key].servings += item.servings;
+        } else {
+            aggregatedFoods[key] = { ...item };
+        }
+    }
+
+    return Object.values(aggregatedFoods);
 }
