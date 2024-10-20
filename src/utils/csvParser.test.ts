@@ -1,36 +1,42 @@
 import { parseCSV } from './csvParser';
+import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from '../types/foodGuide';
+import path from 'path';
 
-// Mock PapaParse's parse function to simulate reading CSV files
-jest.mock('papaparse', () => ({
-    parse: (_filePath: string, config: any) => {
-        config.complete({
-            data: [
-                { fgid: 'vf', foodgroup: 'Vegetables and Fruit', fgcat: 'Dark green vegetable' },
-                { fgid: 'gf', foodgroup: 'Grain Products', fgcat: 'Whole grains' },
-            ],
-        });
-    },
-}));
+const dataDir = path.join(__dirname, '..', '..', 'public', 'data');
 
 describe('parseCSV', () => {
-    it('should parse the CSV data correctly', async () => {
-        const data = await parseCSV('/path/to/mock.csv');
-        expect(data.length).toBe(2);
-        expect(data[0].foodgroup).toBe('Vegetables and Fruit');
-        expect(data[1].foodgroup).toBe('Grain Products');
+    it('should parse FoodGroup CSV data correctly', async () => {
+        const data = await parseCSV<FoodGroup>(path.join(dataDir, 'foodgroups-en_ONPP.csv'));
+        expect(data.length).toBeGreaterThan(0);
+        expect(data[0]).toHaveProperty('foodgroup');
+        expect(data[0]).toHaveProperty('fgid');
+        expect(data[0]).toHaveProperty('fgcat');
+    });
+
+    it('should parse FoodItem CSV data correctly', async () => {
+        const data = await parseCSV<FoodItem>(path.join(dataDir, 'foods-en_ONPP_rev.csv'));
+        expect(data.length).toBeGreaterThan(0);
+        expect(data[0]).toHaveProperty('food');
+        expect(data[0]).toHaveProperty('fgid');
+        expect(data[0]).toHaveProperty('srvg_sz');
+    });
+
+    it('should parse ServingRecommendation CSV data correctly', async () => {
+        const data = await parseCSV<ServingRecommendation>(path.join(dataDir, 'servings_per_day-en_ONPP.csv'));
+        expect(data.length).toBeGreaterThan(0);
+        expect(data[0]).toHaveProperty('gender');
+        expect(data[0]).toHaveProperty('ages');
+        expect(data[0]).toHaveProperty('servings');
+    });
+
+    it('should parse DirectionalStatement CSV data correctly', async () => {
+        const data = await parseCSV<DirectionalStatement>(path.join(dataDir, 'fg_directional_statements-en_ONPP.csv'));
+        expect(data.length).toBeGreaterThan(0);
+        expect(data[0]).toHaveProperty('directional-statement');
+        expect(data[0]).toHaveProperty('fgid');
     });
 
     it('should throw an error if parsing fails', async () => {
-        jest.mock('papaparse', () => ({
-            parse: (_filePath: string, config: any) => {
-                config.error(new Error('Failed to parse'));
-            },
-        }));
-
-        try {
-            await parseCSV('/path/to/failing.csv');
-        } catch (error) {
-            expect((error as Error).message).toBe('Failed to parse');
-        }
+        await expect(parseCSV<FoodGroup>(path.join(dataDir, 'nonexistent.csv'))).rejects.toThrow();
     });
 });
