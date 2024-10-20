@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { parseCSV } from './utils/csvParser';
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from './types/foodGuide';
 import { logger } from './utils/logger';
+import UserForm from './components/UserForm';
 
 const App: React.FC = () => {
     const [foodGroups, setFoodGroups] = useState<FoodGroup[]>([]);
@@ -9,6 +10,9 @@ const App: React.FC = () => {
     const [servings, setServings] = useState<ServingRecommendation[]>([]);
     const [directionalStatements, setDirectionalStatements] = useState<DirectionalStatement[]>([]);
     const [error, setError] = useState<string | null>(null);
+
+    const [userAge, setUserAge] = useState<number | null>(null);
+    const [userGender, setUserGender] = useState<string | null>(null);
 
     useEffect(() => {
         const loadCSVData = async () => {
@@ -41,34 +45,21 @@ const App: React.FC = () => {
         loadCSVData();
     }, []);
 
+    const handleFormSubmit = (age: number, gender: string) => {
+        setUserAge(age);
+        setUserGender(gender);
+    };
+
     return (
         <div>
             <h1>Canada's Food Guide</h1>
             {error && <p>{error}</p>}
-            <h2>Food Groups</h2>
-            <ul>
-                {foodGroups.map((group, index) => (
-                    <li key={index}>{group.foodgroup}</li>
-                ))}
-            </ul>
-            <h2>Food Items</h2>
-            <ul>
-                {foods.map((food, index) => (
-                    <li key={index}>{food.food}</li>
-                ))}
-            </ul>
-            <h2>Serving Recommendations</h2>
-            <ul>
-                {servings.map((serving, index) => (
-                    <li key={index}>{serving.gender}: {serving.servings} servings</li>
-                ))}
-            </ul>
-            <h2>Directional Statements</h2>
-            <ul>
-                {directionalStatements.map((statement, index) => (
-                    <li key={index}>{statement['directional-statement']}</li>
-                ))}
-            </ul>
+            <UserForm onSubmit={handleFormSubmit} />
+            {userAge && userGender && (
+                <p>
+                    Showing menu for age: {userAge}, gender: {userGender}
+                </p>
+            )}
         </div>
     );
 };
