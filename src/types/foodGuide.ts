@@ -23,5 +23,5 @@ export interface ServingRecommendation {
 // Interface for the directional statements CSV
 export interface DirectionalStatement {
     fgid: string;
-    directional_statement: string;
+    "directional-statement": string;
 }
