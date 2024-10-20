@@ -1,4 +1,5 @@
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from '../types/foodGuide';
+import {logger} from "./logger.ts";
 
 interface DailyMenu {
     [key: string]: {
@@ -16,6 +17,7 @@ export function calculateDailyMenu(
     servings: ServingRecommendation[],
     directionalStatements: DirectionalStatement[]
 ): DailyMenu {
+    logger.debug('Calculating daily menu for:', { age, gender });
     const dailyMenu: DailyMenu = {};
 
     // Find the appropriate serving recommendations for the user's age and gender
@@ -23,6 +25,7 @@ export function calculateDailyMenu(
         s.gender.toLowerCase() === gender.toLowerCase() &&
         isAgeInRange(age, s.ages)
     );
+    logger.debug('User servings:', userServings);
 
     // Calculate servings for each food group
     for (const serving of userServings) {
@@ -37,6 +40,7 @@ export function calculateDailyMenu(
                 foods: getOptimalFoods(groupFoods, servingCount, foodGroup),
                 directionalStatements: statements
             };
+            logger.debug(`Added ${foodGroup.foodgroup} to daily menu:`, dailyMenu[foodGroup.foodgroup]);
         }
     }
 
