@@ -40,4 +40,3 @@ export const useCSVData = () => {
 
   return { foodGroups, foods, servings, directionalStatements, error };
 };
-

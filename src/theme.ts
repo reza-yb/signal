@@ -6,12 +6,12 @@ const getTheme = (mode: 'light' | 'dark'): ThemeOptions => ({
     ...(mode === 'light'
       ? {
           primary: {
-            main: '#1976d2', // Changed to a more visually appealing blue
+            main: '#1976d2',
             light: '#63a4ff',
             dark: '#004ba0',
           },
           secondary: {
-            main: '#d32f2f', // Changed to a more visually appealing red
+            main: '#d32f2f',
             light: '#ff6659',
             dark: '#9a0007',
           },
@@ -26,17 +26,17 @@ const getTheme = (mode: 'light' | 'dark'): ThemeOptions => ({
         }
       : {
           primary: {
-            main: '#90caf9', // Changed to a more visually appealing light blue
-            light: '#e3f2fd',
-            dark: '#42a5f5',
+            main: '#3f51b5',
+            light: '#757de8',
+            dark: '#002984',
           },
           secondary: {
-            main: '#f48fb1', // Changed to a more visually appealing light pink
+            main: '#f48fb1',
             light: '#f8bbd0',
             dark: '#ec407a',
           },
           background: {
-            default: '#121212', // Changed to a darker background for better contrast
+            default: '#121212',
             paper: '#1e1e1e',
           },
           text: {

@@ -6,7 +6,7 @@ import ShoppingList from '../components/ShoppingList';
 import FamilyMemberSelector from './FamilyMemberSelector';
 import PlanDisplay from './PlanDisplay';
 import { useFamilyPlans } from '../hooks/useFamilyPlans';
-import {MyPlanProps} from "../types/props";
+import {FoodWithServings, MyPlanProps} from "../types/props";
 
 // Component to display personalized daily menu and shopping list for family members
 const MyPlan: React.FC<MyPlanProps> = ({
@@ -53,12 +53,10 @@ const MyPlan: React.FC<MyPlanProps> = ({
   };
 
   // Memoized list of all foods for shopping list
-  const allFoods = useMemo(() => {
-    const foods = Object.values(familyPlans).flatMap(plan => 
-      Object.values(plan as Record<string, { foods: any[] }>).flatMap(group => group.foods)
+  const allFoods = useMemo((): FoodWithServings[] => {
+    return Object.values(familyPlans).flatMap(plan => 
+      Object.values(plan as Record<string, { foods: FoodWithServings[] }>).flatMap(group => group.foods)
     );
-    console.log('All foods before passing to ShoppingList:', foods);
-    return foods;
   }, [familyPlans]);
 
   return (
