@@ -87,3 +87,16 @@ This method will build and run the application in a Docker container, making it 
 - React Router
 - Papa Parse (for CSV parsing)
 - Jest (for testing)
+
+## Security Best Practices
+
+We have implemented several security best practices to ensure the safety and integrity of our application:
+
+- **Input Validation**: We validate user inputs to prevent injection attacks and ensure data integrity.
+- **Content Security Policy (CSP)**: We recommend setting up a CSP to mitigate XSS attacks.
+- **HTTPS**: We recommend that the application is served over HTTPS in production to protect data in transit.
+- **Dependency Management**: We regularly update dependencies and use `npm audit` to check for vulnerabilities.
+- **Error Handling**: We handle errors gracefully to avoid exposing sensitive information.
+- **Rate Limiting**: We recommend implementing rate limiting on API endpoints to prevent abuse.
+
+These practices help us maintain a secure and robust application environment.
