@@ -5,10 +5,12 @@ import { logger } from './utils/logger';
 import UserForm from './components/UserForm';
 
 const App: React.FC = () => {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const [foodGroups, setFoodGroups] = useState<FoodGroup[]>([]);
     const [foods, setFoods] = useState<FoodItem[]>([]);
     const [servings, setServings] = useState<ServingRecommendation[]>([]);
     const [directionalStatements, setDirectionalStatements] = useState<DirectionalStatement[]>([]);
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     const [error, setError] = useState<string | null>(null);
 
     const [userAge, setUserAge] = useState<number | null>(null);
