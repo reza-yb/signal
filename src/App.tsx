@@ -3,37 +3,39 @@ import { parseCSV } from './utils/csvParser';
 import { FoodGroup, FoodItem, ServingRecommendation, DirectionalStatement } from './types/foodGuide';
 import { logger } from './utils/logger';
 import UserForm from './components/UserForm';
+import { calculateDailyMenu } from './utils/menuCalculator';
+import { getFilePath } from './config';
 
 const App: React.FC = () => {
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const [_foodGroups, setFoodGroups] = useState<FoodGroup[]>([]);
-    const [_foods, setFoods] = useState<FoodItem[]>([]);
-    const [_servings, setServings] = useState<ServingRecommendation[]>([]);
+    const [foodGroups, setFoodGroups] = useState<FoodGroup[]>([]);
+    const [foods, setFoods] = useState<FoodItem[]>([]);
+    const [servings, setServings] = useState<ServingRecommendation[]>([]);
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const [_directionalStatements, setDirectionalStatements] = useState<DirectionalStatement[]>([]);
-    /* eslint-enable @typescript-eslint/no-unused-vars */
     const [error, setError] = useState<string | null>(null);
 
     const [userAge, setUserAge] = useState<number | null>(null);
     const [userGender, setUserGender] = useState<string | null>(null);
+    const [dailyMenu, setDailyMenu] = useState<ReturnType<typeof calculateDailyMenu> | null>(null);
 
     useEffect(() => {
         const loadCSVData = async () => {
             try {
                 logger.info('Starting to load CSV data...');
 
-                const foodGroupData = await parseCSV<FoodGroup>('./data/foodgroups-en_ONPP.csv');
+                const foodGroupData = await parseCSV<FoodGroup>(getFilePath('foodGroups'));
                 logger.debug('Food Group Data:', foodGroupData);
                 setFoodGroups(foodGroupData);
 
-                const foodItemData = await parseCSV<FoodItem>('./data/foods-en_ONPP_rev.csv');
+                const foodItemData = await parseCSV<FoodItem>(getFilePath('foods'));
                 logger.debug('Food Item Data:', foodItemData);
                 setFoods(foodItemData);
 
-                const servingData = await parseCSV<ServingRecommendation>('./data/servings_per_day-en_ONPP.csv');
+                const servingData = await parseCSV<ServingRecommendation>(getFilePath('servings'));
                 logger.debug('Serving Data:', servingData);
                 setServings(servingData);
 
-                const statementData = await parseCSV<DirectionalStatement>('./data/fg_directional_statements-en_ONPP.csv');
+                const statementData = await parseCSV<DirectionalStatement>(getFilePath('directionalStatements'));
                 logger.debug('Statement Data:', statementData);
                 setDirectionalStatements(statementData);
 
@@ -47,6 +49,13 @@ const App: React.FC = () => {
         loadCSVData();
     }, []);
 
+    useEffect(() => {
+        if (userAge && userGender && foodGroups.length && foods.length && servings.length) {
+            const menu = calculateDailyMenu(userAge, userGender, foodGroups, foods, servings);
+            setDailyMenu(menu);
+        }
+    }, [userAge, userGender, foodGroups, foods, servings]);
+
     const handleFormSubmit = (age: number, gender: string) => {
         setUserAge(age);
         setUserGender(gender);
@@ -58,9 +67,19 @@ const App: React.FC = () => {
             {error && <p>{error}</p>}
             <UserForm onSubmit={handleFormSubmit} />
             {userAge && userGender && (
-                <p>
-                    Showing menu for age: {userAge}, gender: {userGender}
-                </p>
+                <div>
+                    <h2>Daily Menu for age: {userAge}, gender: {userGender}</h2>
+                    {dailyMenu && Object.entries(dailyMenu).map(([group, { servings, foods }]) => (
+                        <div key={group}>
+                            <h3>{group}: {servings} servings</h3>
+                            <ul>
+                                {foods.map((food, index) => (
+                                    <li key={index}>{food.food} - {food.srvg_sz}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
             )}
         </div>
     );
