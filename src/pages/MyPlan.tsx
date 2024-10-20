@@ -48,6 +48,12 @@ const MyPlan: React.FC<MyPlanProps> = ({
     }
   }, [familyPlans, navigate]);
 
+  useEffect(() => {
+    if (activeTab === 'menu' && familyMembers.length > 0) {
+      setSelectedMember(familyMembers[0]);
+    }
+  }, [activeTab, familyMembers]);
+
   const handleSelectMember = (member: FamilyMember) => {
     setSelectedMember(member);
     setActiveTab('menu');
