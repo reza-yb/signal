@@ -9,9 +9,15 @@ export const parseCSV = async <T>(filePath: string): Promise<T[]> => {
             Papa.parse<T>(fileContent, {
                 header: true,
                 transformHeader: (header: string) => header.trim(),
-                transform: (value: string) => value.trim(),
+                transform: (value: string) => {
+                    const cleanedValue = value.trim();
+                    return cleanedValue.replace(/�/g, "1/2");
+                },
                 complete: (results) => {
-                    resolve(results.data);
+                    const filteredData = results.data.filter(row => 
+                        Object.values(row as Record<string, unknown>).some(value => value !== "")
+                    );
+                    resolve(filteredData);
                 },
                 error: (error: Error) => {
                     reject(error);

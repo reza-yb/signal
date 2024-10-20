@@ -8,6 +8,7 @@ export interface FoodGroup {
 // Interface for each row of foods CSV
 export interface FoodItem {
     fgid: string;
+    fgcat_id: string;
     food: string;
     srvg_sz: string;
 }
@@ -24,4 +25,11 @@ export interface ServingRecommendation {
 export interface DirectionalStatement {
     fgid: string;
     "directional-statement": string;
+}
+
+// Interface for family members
+export interface FamilyMember {
+    name: string;
+    age: number;
+    gender: 'male' | 'female';
 }
