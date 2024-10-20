@@ -52,11 +52,31 @@ const theme = createTheme({
         },
       },
     },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          '&:focus': {
+            outline: 'none',
+          },
+          '&.Mui-focusVisible': {
+            outline: 'none',
+            backgroundColor: 'transparent',
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
           borderRadius: '8px',
+          '&:focus': {
+            outline: 'none',
+            backgroundColor: 'transparent',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.04)', // Light gray hover effect
+          },
         },
       },
     },
