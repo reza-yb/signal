@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Button, Chip, Box, Collapse } from '@mui/material';
-import { FoodGroup, FoodItem } from '../types/foodGuide';
-import { styled } from '@mui/system';
+import { CardContent, Typography, Button, Chip, Box, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import {FoodGroup, FoodItem} from '../types/foodGuide';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { StyledCard, CardHeader } from './FoodGroupCard/styles';
+import FoodList from './FoodList';
+import TipsList from './TipsList';
 
 interface FoodGroupCardProps {
   foodGroup: FoodGroup;
@@ -14,25 +15,6 @@ interface FoodGroupCardProps {
   directionalStatements: string[];
 }
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'transform 0.3s, box-shadow 0.3s',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: (theme.shadows as string[])[4],
-  },
-}));
-
-const CardHeader = styled(Box)(({ theme }) => ({
-  background: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
-  padding: theme.spacing(2),
-  borderTopLeftRadius: theme.shape.borderRadius,
-  borderTopRightRadius: theme.shape.borderRadius,
-}));
-
 const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
   foodGroup,
   servings,
@@ -40,49 +22,10 @@ const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
   directionalStatements,
 }) => {
   const [showTips, setShowTips] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  const renderFoodList = () => (
-    <>
-      <List dense>
-        {foods.slice(0, 3).map((item, index) => (
-          <ListItem key={index} disableGutters>
-            <ListItemText 
-              primary={`${item.food.food}`}
-              secondary={`${item.servings} serving${item.servings > 1 ? 's' : ''}`}
-            />
-          </ListItem>
-        ))}
-      </List>
-      {foods.length > 3 && (
-        <>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <List dense>
-              {foods.slice(3).map((item, index) => (
-                <ListItem key={index + 3} disableGutters>
-                  <ListItemText 
-                    primary={`${item.food.food}`}
-                    secondary={`${item.servings} serving${item.servings > 1 ? 's' : ''}`}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Collapse>
-          <Button
-            onClick={handleExpandClick}
-            startIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            sx={{ mt: 1 }}
-          >
-            {expanded ? 'Show Less' : `Show ${foods.length - 3} More`}
-          </Button>
-        </>
-      )}
-    </>
-  );
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
 
   return (
     <StyledCard>
@@ -93,27 +36,56 @@ const FoodGroupCard: React.FC<FoodGroupCardProps> = ({
         <Chip 
           label={`${servings} servings`} 
           size="small" 
-          sx={{ mt: 1, backgroundColor: 'rgba(255,255,255,0.2)' }}
+          sx={{ 
+            mt: 1, 
+            backgroundColor: theme => theme.palette.primary.light,
+            color: theme => theme.palette.primary.contrastText,
+          }}
         />
       </CardHeader>
-      <CardContent sx={{ flexGrow: 1 }}>
-        {!showTips ? renderFoodList() : (
-          <List dense>
-            {directionalStatements.map((statement, index) => (
-              <ListItem key={index} disableGutters>
-                <ListItemText primary={statement} />
-              </ListItem>
-            ))}
-          </List>
-        )}
+      <CardContent sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 200 }}>
+          {!showTips ? (
+            <>
+              <FoodList items={foods.slice(0, 3)} />
+              {foods.length > 3 && (
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                  <Button
+                    onClick={handleOpenDialog}
+                    startIcon={<ExpandMoreIcon />}
+                    variant="outlined"
+                    size="small"
+                  >
+                    Show {foods.length - 3} More
+                  </Button>
+                </Box>
+              )}
+            </>
+          ) : (
+            <TipsList tips={directionalStatements} />
+          )}
+        </Box>
       </CardContent>
       <Button 
         startIcon={showTips ? <RestaurantIcon /> : <TipsAndUpdatesIcon />}
         onClick={() => setShowTips(!showTips)}
-        sx={{ mt: 'auto' }}
+        sx={{ 
+          mt: 'auto', 
+          color: 'secondary.main',
+          '&:hover': {
+            backgroundColor: 'secondary.light',
+            color: 'secondary.contrastText',
+          },
+        }}
       >
         {showTips ? 'Show Foods' : 'Show Tips'}
       </Button>
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>{foodGroup.foodgroup} - All Foods</DialogTitle>
+        <DialogContent>
+          <FoodList items={foods} />
+        </DialogContent>
+      </Dialog>
     </StyledCard>
   );
 };
